@@ -16,7 +16,7 @@ const template = html<MyTodo>`<h1>Todos WC</h1>
                     index="${(x, c) => c.index}" 
                     @removed=${(x, c) => c.parent.removeItem(c.event)}
                     @checked=${(x, c) => c.parent.toggleItem(c.event)}>
-                </todo-item>`)}
+                </todo-item>`, { positioning: true })}
     </ul>
 </section>`;
 
