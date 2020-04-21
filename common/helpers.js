@@ -71,7 +71,7 @@ async function benchPageLoad(element, context) {
         await page.tracing.start({
             path: filename
         });
-        await page.goto(`${LOCALHOST}/demos/${context}/${element.slug}`, {
+        await page.goto(`${LOCALHOST}/${context}/${element.slug}/dist`, {
             waitUntil: 'load'
         });
         await page.tracing.stop();
@@ -106,7 +106,7 @@ async function benchCreate(element, context) {
 
         filename = `benchmarks-results/${slug}/create-todos_${i}.json`;
 
-        await page.goto(`${LOCALHOST}/demos/${context}/${element.slug}`, {
+        await page.goto(`${LOCALHOST}/${context}/${element.slug}/dist`, {
             waitUntil: 'load'
         });
 
@@ -154,7 +154,7 @@ async function benchDelete(element, context) {
 
         filename = `benchmarks-results/${slug}/delete-todos_${i}.json`;
 
-        await page.goto(`${LOCALHOST}/demos/${context}/${element.slug}`, {
+        await page.goto(`${LOCALHOST}/${context}/${element.slug}/dist`, {
             waitUntil: 'load'
         });
 
@@ -215,7 +215,7 @@ async function benchEdit(element, context) {
 
         filename = `benchmarks-results/${slug}/edit-todos_${i}.json`;
 
-        await page.goto(`${LOCALHOST}/demos/${context}/${element.slug}`, {
+        await page.goto(`${LOCALHOST}/${context}/${element.slug}/dist`, {
             waitUntil: 'load'
         });
 
@@ -263,7 +263,9 @@ async function benchTti(element, context) {
     });
     const page = await browser.newPage();
 
-    await page.goto(`${LOCALHOST}/demos/${context}/${element.slug}`);
+    console.log(`${LOCALHOST}/${context}/${element.slug}/dist`);
+
+    await page.goto(`${LOCALHOST}/${context}/${element.slug}/dist`);
     const lighthouseMetrics = await gatherLighthouseMetrics(page, perfConfig);
     const firstInteractive = parseInt(
         lighthouseMetrics.lhr.audits['interactive']['numericValue'],
