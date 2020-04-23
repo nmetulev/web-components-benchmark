@@ -12,6 +12,8 @@ cd ../hyperHTMLElement
 npm ci
 cd ../lit-element
 npm ci
+cd ../fast-element
+npm ci
 cd ../native
 npm ci
 cd ../omi

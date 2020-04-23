@@ -17,7 +17,7 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "@microsoft/fast-element": "file:../../../../fast-dna/packages/web-components/fast-element/microsoft-fast-element-0.6.0.tgz",
+        "@microsoft/fast-element": "file:../../../fast-dna/packages/web-components/fast-element/microsoft-fast-element-0.7.0.tgz",
         "typescript": "^3.7.5"
     }
 }

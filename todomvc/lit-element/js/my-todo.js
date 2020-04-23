@@ -64,19 +64,21 @@ class MyTodo extends LitElement {
     }
 
     addItem(e) {
-        this.list.splice(this.list.length, 0, { id: nextId++, text: e.detail, checked: false });
-        this.requestUpdate();
+        this.list = [...this.list, { id: nextId++, text: e.detail, checked: false }];
     }
 
     removeItem(e) {
-        this.list.splice(e.detail, 1);
-        this.requestUpdate();
+        this.list = [
+            ...this.list.slice(0, e.detail),
+            ...this.list.slice(e.detail + 1)
+          ];
     }
 
     toggleItem(e) {
-        const item = this.list[e.detail];
-        item.checked = !item.checked;
-        this.requestUpdate();
+        const list = [...this.list];
+        const item = list[e.detail];
+        list[e.detail] = Object.assign({}, item, { checked: !item.checked });
+        this.list = list;
     }
 }
 
