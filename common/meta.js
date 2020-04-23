@@ -1,12 +1,5 @@
 module.exports = {
-    wc: [{
-            name: 'Native',
-            slug: 'native',
-            version: '',
-            github: 'https://github.com/webcomponents/webcomponentsjs',
-            stars: '',
-            paths: ['native/dist/bundle.js']
-        },
+    wc: [
         {
             name: 'LitElement',
             slug: 'lit-element',
@@ -15,6 +8,15 @@ module.exports = {
                 .dependencies['lit-element'],
             stars: 2169,
             paths: ['lit-element/dist/bundle.js']
+        },
+        {
+            name: 'FastElement',
+            slug: 'fast-element',
+            github: '',
+            version: require('../todomvc/fast-element/package.json')
+                .dependencies['@microsoft/fast-element'],
+            stars: 0,
+            paths: ['fast-element/dist/bundle.js']
         }
     ],
     fw: [

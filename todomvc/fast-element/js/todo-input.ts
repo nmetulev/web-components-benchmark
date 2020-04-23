@@ -1,18 +1,18 @@
-import { FASTElement, customElement, attr, html, css } from '../node_modules/@microsoft/fast-element/dist/index.js';
+import { FASTElement, customElement, html, css, ref } from '../node_modules/@microsoft/fast-element/dist/index.js';
 
 const inputTemplate = html<TodoInput>`
-<form id="new-todo-form" @submit=${(x, c) => x.handleSubmit(c.event)}>
-    <input id="new-todo" type="text" placeholder="What needs to be done?"/>
+<form @submit=${(x, c) => x.handleSubmit(c.event)}>
+    <input type="text" placeholder="What needs to be done?" ${ref('$input')}/>
 </form>`;
 
 const inputStyles = css`
-#new-todo-form {
+form {
     position: relative;
     font-size: 24px;
     border-bottom: 1px solid #ededed;
 }
 
-#new-todo {
+input {
     padding: 16px 16px 16px 60px;
     border: none;
     background: rgba(0, 0, 0, 0.003);
@@ -35,13 +35,12 @@ const inputStyles = css`
 @customElement({name:'todo-input', template: inputTemplate, styles: inputStyles})
 class TodoInput extends FASTElement {
 
-    @attr temp;
+    $input!: HTMLInputElement;
 
     public handleSubmit(e) {
         e.preventDefault();
-        const input = this.shadowRoot.querySelector('#new-todo') as HTMLInputElement;
-        this.$emit('submit', input.value );
-        input.value = '';
-        input.blur();
+        this.$emit('submit', this.$input.value);
+        this.$input.value = '';
+        this.$input.blur();
     }
 }

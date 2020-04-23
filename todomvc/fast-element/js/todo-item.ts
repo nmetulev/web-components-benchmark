@@ -1,12 +1,10 @@
-import { FASTElement, customElement, attr, html, css } from '../node_modules/@microsoft/fast-element/dist/index.js';
-
-
+import { FASTElement, customElement, html, css, observable } from '../node_modules/@microsoft/fast-element/dist/index.js';
 
 const itemTemplate = html<TodoItem>`
 <li class="item ${x => x.checked ? 'completed' : ''}">
-    <input type="checkbox" checked=${x => x.checked} @change=${(x, c) => x.handleOnChecked(c.event)}>
+    <input type="checkbox" ?checked=${x => x.checked} @change=${x => x.handleOnChecked()}>
     <label>${x => x.text}</label>
-    <button class="destroy" @click=${(x, c) => x.handleOnRemoved(c.event)}>x</button>
+    <button class="destroy" @click=${x => x.handleOnRemoved()}>x</button>
 </li>`;
 
 const itemStyles = css`
@@ -102,9 +100,9 @@ li.item .destroy:hover {
 @customElement({name:'todo-item', template: itemTemplate, styles: itemStyles})
 class TodoItem extends FASTElement {
 
-    @attr public checked: Boolean;
-    @attr public index: Number;
-    @attr public text: String;
+    @observable public checked: Boolean;
+    @observable public index: Number;
+    @observable public text: String;
 
 
     constructor() {
@@ -114,12 +112,11 @@ class TodoItem extends FASTElement {
         this.index = 0;
     }
 
-    handleOnRemoved(e) {
+    handleOnRemoved() {
         this.$emit('removed', this.index);
     }
 
-    handleOnChecked(e) {
-        console.log('checked', e);
+    handleOnChecked() {
         this.$emit('checked', this.index);
     }
 }

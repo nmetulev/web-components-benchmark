@@ -1,19 +1,19 @@
-import { FASTElement, customElement, attr, html, css } from '../node_modules/@microsoft/fast-element/dist/index.js';
+import { FASTElement, customElement, attr, html, css, observable, ref } from '../node_modules/@microsoft/fast-element/dist/index.js';
 import { repeat } from '../node_modules/@microsoft/fast-element/dist/directives/repeat.js';
 
 let nextId = 0;
 
 const template = html<MyTodo>`<h1>Todos WC</h1>
 <section>
-    <todo-input @submit=${(x, c) => x.addItem(c.event)}></todo-input>
+    <todo-input @submit=${(x, c) => x.addItem(c.event)} ${ref('temp')}></todo-input>
     <ul id="list-container">
         ${repeat(
             x => x.list,
             html`
                 <todo-item 
-                    text="${x => x.text}" 
-                    checked="${x => x.checked}" 
-                    index="${(x, c) => c.index}" 
+                    :text="${x => x.text}" 
+                    :checked="${x => x.checked}" 
+                    :index="${(x, c) => c.index}" 
                     @removed=${(x, c) => c.parent.removeItem(c.event)}
                     @checked=${(x, c) => c.parent.toggleItem(c.event)}>
                 </todo-item>`, { positioning: true })}
@@ -43,15 +43,17 @@ section {
 
 @customElement({name:'my-todo', template, styles})
 class MyTodo extends FASTElement {
-   @attr list : any[]
+   @observable list : any[]
+
+   temp: HTMLElement;
 
     constructor() {
         super();
         this.list = [{ id: nextId++, text: 'my initial todo', checked: false }, { id: nextId++, text: 'Learn about Web Components', checked: true }];
     }
 
-    public addItem(e) {
-        this.list.splice(this.list.length, 0, { id: nextId++, text: e.detail, checked: false });
+    public addItem(e: Event) {
+        this.list.push({ id: nextId++, text: (e as CustomEvent).detail, checked: false });
     }
 
     public removeItem(e) {
@@ -60,7 +62,8 @@ class MyTodo extends FASTElement {
 
     public toggleItem(e) {
         const item = this.list[e.detail];
-        item.checked = !item.checked;
+        const newItem = Object.assign({}, item, { checked: !item.checked });
+        this.list.splice(e.detail, 1, newItem);
     }
 }
 
